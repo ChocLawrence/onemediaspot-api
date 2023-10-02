@@ -96,7 +96,6 @@ Route::middleware(['cors'])->group(function () {
   Route::get('institutions',[InstitutionController::class, 'getInstitutions']);
   Route::get('institutions/{id}',[InstitutionController::class, 'getInstitution']);
 
-
   //subscribers 
   Route::post('subscribers',[SubscriberController::class,'addSubscriber']);
 
@@ -370,7 +369,6 @@ Route::middleware(['cors'])->group(function () {
       //subscribers
       Route::get('subscribers',[SubscriberController::class, 'getSubscribers']);
       Route::get('subscribers/{id}',[SubscriberController::class, 'getSubscriber']);
-      Route::put('subscribers/{id}',[SubscriberController::class,'updateSubscriber']);
       Route::delete('subscribers/{id}',[SubscriberController::class,'deleteSubscriber']);
 
       //tags

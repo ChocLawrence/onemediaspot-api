@@ -38,7 +38,7 @@ class TagController extends Controller
     public function getTag($id) {
 
         try{
-            $tag= Tag::where('id', $id)->get();
+            $tag= Tag::find($id);
             return $this->successResponse($tag);
         }catch(\Exception $e){
             return $this->errorResponse($e->getMessage(), 404);
