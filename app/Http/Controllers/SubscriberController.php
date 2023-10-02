@@ -77,7 +77,7 @@ class SubscriberController extends Controller
 
             $subscriber=new Subscriber();
             $subscriber->email= $request->email;
-            $subscriber->user_id= $id;
+            $subscriber->user_id= $id ? $id : null;
             $subscriber->save();
 
             return $this->successResponse($subscriber,"Saved successfully", 200);
