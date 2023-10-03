@@ -73,11 +73,13 @@ class SubscriberController extends Controller
             if (Auth::check())
             {
                 $id = Auth::id();
+            }else{
+                $id = null;
             }
 
             $subscriber=new Subscriber();
             $subscriber->email= $request->email;
-            $subscriber->user_id= $id ? $id : null;
+            $subscriber->user_id= $id;
             $subscriber->save();
 
             return $this->successResponse($subscriber,"Saved successfully", 200);

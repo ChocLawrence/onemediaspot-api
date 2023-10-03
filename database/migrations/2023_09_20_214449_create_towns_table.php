@@ -18,6 +18,7 @@ return new class extends Migration
         Schema::create('towns', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->string('abbr')->nullable();
             $table->foreignId('city_id')
             ->nullable()
             ->constrained('cities')
