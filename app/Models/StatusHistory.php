@@ -22,9 +22,19 @@ class StatusHistory extends Model
         return $this->belongsTo('App\Models\User');
     }
 
-    public function company()
+    public function institution()
     {
-        return $this->belongsTo('App\Models\Company');
+        return $this->belongsTo('App\Models\Institution');
+    }
+
+    public function institution_access()
+    {
+        return $this->belongsTo('App\Models\InstitutionAccess');
+    }
+
+    public function service()
+    {
+        return $this->belongsTo('App\Models\Service');
     }
 
 

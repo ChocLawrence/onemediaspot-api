@@ -33,6 +33,10 @@ return new class extends Migration
              ->nullable()
              ->constrained('institutions')
              ->onDelete('cascade');
+             $table->foreignId('institution_access_id')
+             ->nullable()
+             ->constrained('institution_accesses')
+             ->onDelete('cascade');
              $table->foreignId('user_id')
              ->nullable()
              ->constrained('users')

@@ -17,4 +17,9 @@ class InstitutionAccess extends Model
         return $this->belongsTo('App\Models\Institution');
     }
 
+    public function status()
+    {
+        return $this->hasOne('App\Models\Status');
+    }
+
 }

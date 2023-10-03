@@ -17,7 +17,7 @@ class Institution extends Model
         return $this->hasMany('App\Models\Service');
     }
 
-    public function company_type()
+    public function institution_type()
     {
         return $this->hasOne('App\Models\InstitutionType');
     }
@@ -25,6 +25,11 @@ class Institution extends Model
     public function institution_accesses()
     {
         return $this->hasMany('App\Models\InstitutionAccess');
+    }
+
+    public function status()
+    {
+        return $this->hasOne('App\Models\Status');
     }
 
     public function transactions()
