@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Frequency;
+use App\Models\VerificationType;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 
-class FrequencyController extends Controller
+class VerificationTypeController extends Controller
 {
 
     use ApiResponser;
@@ -20,10 +20,10 @@ class FrequencyController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function getFrequencies(){
+    public function getVerificationTypes(){
         try{
-            $frequencies= Frequency::latest()->get();
-            return $this->successResponse($frequencies);
+            $verificationTypes= VerificationType::latest()->get();
+            return $this->successResponse($verificationTypes);
         }catch(\Exception $e){
             return $this->errorResponse($e->getMessage(), 404);
         }
@@ -35,11 +35,11 @@ class FrequencyController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function getFrequency($id) {
+    public function getVerificationType($id) {
 
         try{
-            $frequency= Frequency::where('id', $id)->get();
-            return $this->successResponse($frequency);
+            $verificationType= VerificationType::where('id', $id)->get();
+            return $this->successResponse($verificationType);
         }catch(\Exception $e){
             return $this->errorResponse($e->getMessage(), 404);
         }
@@ -52,21 +52,21 @@ class FrequencyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function addFrequency(Request $request)
+    public function addVerificationType(Request $request)
     {
         try{
-            $validator = $this->validateFrequency();
+            $validator = $this->validateVerificationType();
             if($validator->fails()){
             return $this->errorResponse($validator->messages(), 422);
             }
 
-            $frequency=new Frequency();
-            $frequency->name= $request->name;
-            $frequency->slug= Str::slug($request->name);
-            $frequency->description= $request->description;
-            $frequency->save();
+            $verificationType=new VerificationType();
+            $verificationType->name= $request->name;
+            $verificationType->slug= Str::slug($request->name);
+            $verificationType->description= $request->description;
+            $verificationType->save();
 
-            return $this->successResponse($frequency,"Saved successfully", 200);
+            return $this->successResponse($verificationType,"Saved successfully", 200);
 
         }catch(\Exception $e){
             return $this->errorResponse($e->getMessage(), 404);
@@ -81,7 +81,7 @@ class FrequencyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateFrequency(Request $request, $id)
+    public function updateVerificationType(Request $request, $id)
     {
 
         try{
@@ -90,25 +90,25 @@ class FrequencyController extends Controller
                 return $this->errorResponse("Nothing to update.Pass fields", 404);  
             }
 
-            $validator = $this->validateFrequency();
+            $validator = $this->validateVerificationType();
             if($validator->fails()){
                return $this->errorResponse($validator->messages(), 422);
             }
 
-            $frequency=Frequency::findOrFail($id);
+            $verificationType=VerificationType::findOrFail($id);
         
             if($request->name){
-              $frequency->name=$request->name;  
-              $frequency->slug=Str::slug($request->name);
+                $verificationType->name=$request->name;  
+                $verificationType->slug=Str::slug($request->name);
+            }
+
+            if($request->description){
+                $verificationType->description=$request->description;  
             }
            
-            if($request->description){
-              $frequency->description = $request->description;
-            }
+            $verificationType->save();
 
-            $frequency->save();
-
-            return $this->successResponse($frequency,"Updated successfully", 200);
+            return $this->successResponse($verificationType,"Updated successfully", 200);
 
         }catch(\Exception $e){
             return $this->errorResponse($e->getMessage(), 404);
@@ -123,11 +123,11 @@ class FrequencyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function deleteFrequency($id)
+    public function deleteVerificationType($id)
     {
         try{
 
-            Frequency::findOrFail($id)->delete();
+            VerificationType::findOrFail($id)->delete();
             return $this->successResponse(null,"Deleted successfully", 200);
 
         }catch(\Exception $e){
@@ -135,10 +135,10 @@ class FrequencyController extends Controller
         }
     }
 
-    public function validateFrequency(){
+    public function validateVerificationType(){
         return Validator::make(request()->all(), [
             'name' => 'required|string|max:20',
-            'description' => 'nullable|string|max:100'
+            'description' => 'required|string|max:100'
         ]);
     }
 }

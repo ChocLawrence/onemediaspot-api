@@ -37,11 +37,11 @@ class NotificationController extends Controller
             }
 
             if($request->sender_id){
-                $notification_query->where('sender_user_id', $request->sender_id);
+                $notification_query->where('sender_id', $request->sender_id);
             }
 
             if($request->receiver_id){
-                $notification_query->where('receiver__user_id', $request->receiver_id);
+                $notification_query->where('receiver_id', $request->receiver_id);
             }
 
             if($request->sortBy && in_array($request->sortBy,['id','created_at'])){
@@ -133,7 +133,9 @@ class NotificationController extends Controller
     public function addNotification(Request $request)
     {
         try{
+
             $validator = $this->validateNotification();
+            
             if($validator->fails()){
             return $this->errorResponse($validator->messages(), 422);
             }
@@ -143,8 +145,8 @@ class NotificationController extends Controller
             $status = Status::where('name', 'unread')->firstOrFail();
             $notification->summary= $request->summary;
             $notification->message= $request->message;
-            $notification->sender_user_id= $request->sender_id;
-            $notification->receiver_user_id= $request->receiver_id;
+            $notification->sender_id= $request->sender_id;
+            $notification->receiver_id= $request->receiver_id;
             $notification->label_id= $request->label_id;
             $notification->status_id= $status->id;
             $notification->url= $request->url;
@@ -155,46 +157,6 @@ class NotificationController extends Controller
         }catch(\Exception $e){
             return $this->errorResponse($e->getMessage(), 404);
         }
-    }
-
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function updateNotificationStatus(Request $request, $id)
-    {
-
-        try{
-
-            if(count($request->all()) == 0){
-                return $this->errorResponse("Nothing to update.Pass fields", 404);  
-            }
-
-            $validator = $this->validateNotificationStatus();
-            if($validator->fails()){
-               return $this->errorResponse($validator->messages(), 422);
-            }
-
-            $notification=Notification::findOrFail($id);
-
-            if($request->status_id){
-                $status = Status::where('id', $request->status_id)->firstOrFail();
-                $notification->status_id= $status->id;
-            }
-            
-            $notification->save();
-
-            return $this->successResponse($notification,"Updated successfully", 200);
-
-        }catch(\Exception $e){
-            return $this->errorResponse($e->getMessage(), 404);
-        }
-        
-        
     }
 
      /**
@@ -268,7 +230,7 @@ class NotificationController extends Controller
 
     public function validateNotification(){
         return Validator::make(request()->all(), [
-            'sender_id' => 'required|exists:users,id',
+            'sender_id' => 'nullable|exists:users,id',
             'receiver_id' => 'required|exists:users,id',
             'label_id' => 'nullable|exists:labels,id',
             'summary' => 'required|string|max:50', 

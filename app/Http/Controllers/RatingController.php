@@ -73,7 +73,8 @@ class RatingController extends Controller
             $rating=new Rating();
             $rating->value= $request->value;
             $rating->comment= $request->comment;
-            $rating->demand_id= $request->demand_id;
+            $rating->service_id= $request->service_id;
+            $rating->institution_id= $request->institution_id;
             $rating->user_id = $id;
             $rating->save();
 
@@ -107,7 +108,8 @@ class RatingController extends Controller
         return Validator::make(request()->all(), [
             'value'  => 'required|in:1,2,3,4,5', 
             'comment' => 'required|string|max:300',
-            'demand_id' => 'required|exists:demands,id'
+            'service_id' => 'required|exists:services,id',
+            'institution_id' => 'required|exists:institutions,id'
         ]);
     }
 

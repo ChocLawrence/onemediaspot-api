@@ -55,7 +55,6 @@ class UnitController extends Controller
     public function addUnit(Request $request)
     {
         try{
-
             $validator = $this->validateUnit();
             if($validator->fails()){
             return $this->errorResponse($validator->messages(), 422);
@@ -64,7 +63,7 @@ class UnitController extends Controller
             $unit=new Unit();
             $unit->name= $request->name;
             $unit->slug= Str::slug($request->name);
-            $unit->abbr=$request->abbr; 
+            $unit->abbr= $request->abbr;
             $unit->save();
 
             return $this->successResponse($unit,"Saved successfully", 200);
@@ -73,6 +72,7 @@ class UnitController extends Controller
             return $this->errorResponse($e->getMessage(), 404);
         }
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -90,7 +90,7 @@ class UnitController extends Controller
                 return $this->errorResponse("Nothing to update.Pass fields", 404);  
             }
 
-            $validator = $this->validateUpdateUnit();
+            $validator = $this->validateUnit();
             if($validator->fails()){
                return $this->errorResponse($validator->messages(), 422);
             }
@@ -98,14 +98,14 @@ class UnitController extends Controller
             $unit=Unit::findOrFail($id);
         
             if($request->name){
-                $unit->name=$request->name;
-                $unit->slug=Str::slug($request->name);  
+              $unit->name=$request->name;  
+              $unit->slug=Str::slug($request->name);
             }
-          
+           
             if($request->abbr){
-                $unit->abbr=$request->abbr; 
+              $unit->abbr = $request->abbr;
             }
-        
+
             $unit->save();
 
             return $this->successResponse($unit,"Updated successfully", 200);
@@ -113,7 +113,8 @@ class UnitController extends Controller
         }catch(\Exception $e){
             return $this->errorResponse($e->getMessage(), 404);
         }
-  
+        
+        
     }
 
     /**
@@ -136,15 +137,8 @@ class UnitController extends Controller
 
     public function validateUnit(){
         return Validator::make(request()->all(), [
-            'name' => 'required|string|max:100',
-            'abbr' => 'required|string|max:2'
-        ]);
-    }
-
-    public function validateUpdateUnit(){
-        return Validator::make(request()->all(), [
-            'name' => 'nullable|string|max:100',
-            'abbr' => 'nullable|string|max:2'
+            'name' => 'required|string|max:20',
+            'abbr' => 'nullable|string|max:100'
         ]);
     }
 }

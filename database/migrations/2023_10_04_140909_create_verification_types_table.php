@@ -14,13 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('days');
-        Schema::create('days', function (Blueprint $table) {
+        Schema::dropIfExists('verification_types');
+        Schema::create('verification_types', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('day_of_week');
             $table->string('name');
-            $table->string('abbr'); 
-            $table->rememberToken();
+            $table->string('slug')->unique();
+            $table->string('description');
             $table->timestamps();
         });
         Schema::enableForeignKeyConstraints();
@@ -34,7 +33,8 @@ return new class extends Migration
     public function down()
     {
         Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('days');
+        Schema::dropIfExists('verification_types');
         Schema::enableForeignKeyConstraints();
     }
 };
+

@@ -46,6 +46,7 @@ use App\Http\Controllers\SlotCoverageController;
 use App\Http\Controllers\TransactionTypeController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\VerificationController;
+use App\Http\Controllers\VerificationTypeController;
 use App\Http\Controllers\PlanTypeController;
 use App\Http\Controllers\UserRoleController;
 use App\Http\Controllers\RepeatedAdvertController;
@@ -138,7 +139,6 @@ Route::middleware(['cors'])->group(function () {
     Route::get('notifications',[NotificationController::class, 'getNotifications']);
     Route::get('notifications/{id}',[NotificationController::class, 'getNotification']);
     Route::post('notifications',[NotificationController::class,'addNotification']);
-    Route::put('notifications/{id}',[NotificationController::class,'updateNotificationStatus']);
     Route::put('notifications/read/{id}',[NotificationController::class,'markAsRead']);
     Route::put('notifications/uread/{id}',[NotificationController::class,'markAsUnRead']);
     Route::delete('notifications/{id}',[NotificationController::class,'deleteNotification']);
@@ -240,11 +240,9 @@ Route::middleware(['cors'])->group(function () {
     Route::get('paymentprefs',[PaymentPreferenceController::class, 'getPaymentPreferences']);
     Route::get('paymentprefs/{id}',[PaymentPreferenceController::class, 'getPaymentPreference']);
 
-    //contracts
-    Route::get('contracts',[ContractController::class, 'getContracts']); 
-    Route::get('contracts/{id}',[ContractController::class, 'getContract']);  
-    Route::post('contracts',[ContractController::class,'addContract']);
-    Route::put('contracts/{id}',[ContractController::class,'updateContract']);
+    //verification
+    Route::post('verifications',[VerificationController::class,'addVerification']);
+
 
     //END GENERAL 
 
@@ -312,9 +310,6 @@ Route::middleware(['cors'])->group(function () {
         Route::post('vassettypes',[ValidAssetTypeController::class,'addValidAssetType']);
         Route::put('vassettypes/{id}',[ValidAssetTypeController::class,'updateValidAssetType']);
         Route::delete('vassettypes/{id}',[ValidAssetTypeController::class,'deleteValidAssetType']);
-
-        //contracts
-        Route::delete('contracts/{id}',[ContractController::class,'deleteContract']);
 
         // repeated adverts
         Route::put('repeatedadverts/{id}',[RepeatedAdvertController::class,'updateRepeatedAdvert']);
@@ -457,12 +452,12 @@ Route::middleware(['cors'])->group(function () {
       Route::put('frequencies/{id}',[FrequencyController::class,'updateFrequency']);
       Route::delete('frequencies/{id}',[FrequencyController::class,'deleteFrequency']);
 
-      //institytion types
+      //institution types
       Route::post('institutiontypes',[InstitutionTypeController::class,'addInstitutionType']);
       Route::put('institutiontypes/{id}',[InstitutionTypeController::class,'updateInstitutionType']);
       Route::delete('institutiontypes/{id}',[InstitutionTypeController::class,'deleteInstitutionType']);
 
-      //institytion accesses
+      //institution accesses
       Route::post('institutionaccesses',[InstitutionAccessController::class,'addInstitutionAccess']);
       Route::put('institutionaccesses/{id}',[InstitutionAccessController::class,'updateInstitutionAccess']);
       Route::delete('institutionaccesses/{id}',[InstitutionAccessController::class,'deleteInstitutionAccess']);
@@ -475,6 +470,13 @@ Route::middleware(['cors'])->group(function () {
       //user activities
       Route::get('activity',[UserActivityController::class, 'getUserActivities']);
       Route::get('activity/{id}',[UserActivityController::class, 'getUserActivity']);
+
+      //verification types
+      Route::get('verificationtypes',[VerificationTypeController::class, 'getVerificationTypes']);
+      Route::get('verificationtypes/{id}',[VerificationTypeController::class, 'getVerificationType']);
+      Route::post('verificationtypes',[VerificationTypeController::class, 'addVerificationType']);
+      Route::put('verificationtypes/{id}',[VerificationTypeController::class,'updateVerificationType']);
+      Route::delete('verificationtypes/{id}',[VerificationTypeController::class,'deleteVerificationType']);
 
       //verifications
       Route::get('verifications',[VerificationController::class, 'getVerifications']);
@@ -496,8 +498,8 @@ Route::middleware(['cors'])->group(function () {
       Route::delete('userroles/{id}',[UserRoleController::class,'deleteUserRole']);
 
        //feedback
-       Route::get('feedback',[FeedbackController::class, 'getFeedback']);
-       Route::get('feedback/{id}',[FeedbackController::class, 'getSingleFeedback']);
+       Route::get('feedback',[FeedbackController::class, 'getAllFeedback']);
+       Route::get('feedback/{id}',[FeedbackController::class, 'getFeedback']);
        Route::delete('feedback/{id}',[FeedbackController::class,'deleteFeedback']);
  
 

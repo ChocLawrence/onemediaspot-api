@@ -73,8 +73,10 @@ class PaymentPreferenceController extends Controller
             $paymentPreference= new PaymentPreference();
             $paymentPreference->status_id= $request->status_id ? $request->status_id : $activeStatus->id;
             $paymentPreference->service_id= $request->service_id;
+            $paymentPreference->institution_id= $request->institution_id;
             $paymentPreference->payment_m_id= $request->payment_m_id;
             $paymentPreference->phone=$request->phone;
+            $paymentPreference->email=$request->email;
             $paymentPreference->save();
 
             return $this->successResponse($paymentPreference,"Saved successfully", 200);
@@ -113,6 +115,10 @@ class PaymentPreferenceController extends Controller
               $paymentPreference->service_id= $request->service_id;
             }
 
+            if($request->institution_id){
+                $paymentPreference->institution_id= $request->institution_id;
+            }
+
             if($request->payment_m_id){
                 $paymentPreference->payment_m_id= $request->payment_m_id;
             }
@@ -129,6 +135,10 @@ class PaymentPreferenceController extends Controller
 
             if($request->phone){
                 $paymentPreference->phone= $request->phone;
+            }
+
+            if($request->email){
+                $paymentPreference->email= $request->email;
             }
 
             $paymentPreference->save();
@@ -161,19 +171,23 @@ class PaymentPreferenceController extends Controller
 
     public function validatePaymentPreference(){
         return Validator::make(request()->all(), [
-           'service_id'=>'required|unique:services',
-           'payment_m_id'=>'required|unique:payment_methods',
-           'status_id'=>'required|unique:status',
+           'service_id'=>'nullable|exists:services,id',
+           'payment_m_id'=>'required|exists:payment_methods,id', 
+           'institution_id'=>'nullable|exists:institutions,id',
+           'status_id'=>'nullable|exists:status,id',
            'phone'=>'required|unique|string',
+           'email' => 'required|string|email',
         ]);
     }
 
     public function validateUpdatePaymentPreference(){
         return Validator::make(request()->all(), [
-           'service_id'=>'required|unique:services',
-           'payment_m_id'=>'nullable|unique:payment_methods',
-           'status_id'=>'nullable|unique:status',
+           'service_id'=>'nullable|exists:services,id',
+           'payment_m_id'=>'required|exists:payment_methods,id',
+           'institution_id'=>'nullable|exists:institutions,id',
+           'status_id'=>'nullable|exists:status,id',
            'phone'=>'nullable|string',
+           'email' => 'nullable|string|email',
         ]);
     }
 }

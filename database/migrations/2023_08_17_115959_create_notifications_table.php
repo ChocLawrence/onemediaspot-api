@@ -27,10 +27,11 @@ return new class extends Migration
              $table->foreignId('status_id')
              ->constrained('statuses')
              ->onDelete('cascade');
-             $table->foreignId('sender_user_id')
+             $table->foreignId('sender_id')
+             ->nullable()
              ->constrained('users')
              ->onDelete('cascade');
-             $table->foreignId('receiver_user_id')
+             $table->foreignId('receiver_id')
              ->constrained('users')
              ->onDelete('cascade'); 
              $table->timestamps();

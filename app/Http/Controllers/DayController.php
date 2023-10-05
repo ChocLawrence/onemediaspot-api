@@ -63,8 +63,8 @@ class DayController extends Controller
             $day=new Day();
             $day->name= $request->name;
             $day->day_of_week= $request->day_of_week;
-            $short_name = substr($request->name, 0, 2);
-            $day->short_name= $short_name;
+            $abbr = substr($request->name, 0, 2);
+            $day->abbr= $abbr;
             $day->save();
 
             return $this->successResponse($day,"Saved successfully", 200);
@@ -99,8 +99,8 @@ class DayController extends Controller
             $day=Day::findOrFail($id);
         
             $day->name=$request->name; 
-            $short_name = substr($request->name, 0, 2);
-            $day->short_name= $short_name; 
+            $abbr = substr($request->name, 0, 2);
+            $day->abbr= $abbr; 
             $day->day_of_week= $request->day_of_week;
             $day->save();
 
@@ -133,6 +133,7 @@ class DayController extends Controller
 
     public function validateDay(){
         return Validator::make(request()->all(), [
+            'day_of_week' => 'required|string|min:1|max:7',
             'name' => 'required|string|max:10'
         ]);
     }
